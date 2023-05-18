@@ -1,11 +1,26 @@
 from PIL import ImageGrab
 import pyautogui
+import numpy as np
 
 # YOU MAY NEED TO CHANGE THESE VALUES BASED ON YOUR SCREEN SIZE
-LEFT = 570
-TOP = 200
-RIGHT = 1350
-BOTTOM = 875
+# 780 width
+# 675 height
+
+#! Hamza's Values
+# LEFT = 431
+# TOP = 190
+# RIGHT = 934
+# BOTTOM = 619
+# START_CORD = (39, 34)
+# STEP = 71
+
+#! Ziad's Values
+LEFT = 591
+TOP = 256
+RIGHT = 1308
+BOTTOM = 871
+START_CORD = (50, 50)
+STEP = 100
 
 EMPTY = 0
 RED = 1
@@ -15,6 +30,7 @@ BLUE = 2
 class Board:
     def __init__(self) -> None:
         self.board = [[EMPTY for i in range(7)] for j in range(6)]
+        # self.board = np.full((6, 7), EMPTY, dtype=int)
 
     def print_grid(self, grid):
         for i in range(0, len(grid)):
@@ -39,14 +55,14 @@ class Board:
         return grid
 
     def _get_grid_cordinates(self):
-        startCord = (50, 55)
+        startCord = START_CORD
         cordArr = []
         for i in range(0, 7):
             for j in range(0, 6):
-                x = startCord[0] + i * 115
-                y = startCord[1] + j * 112
+                x = startCord[0] + i * STEP
+                y = startCord[1] + j * STEP
                 cordArr.append((x, y))
-        return cordArr
+        return cordArr 
 
     def _transpose_grid(self, grid):
         return [[grid[j][i] for j in range(len(grid))] for i in range(len(grid[0]))]
@@ -68,6 +84,7 @@ class Board:
 
     def _get_grid(self):
         cropedImage = self._capture_image()
+        # cropedImage.show()
         pixels = self._convert_image_to_grid(cropedImage)
         # cropedImage.show()
         grid = self._transpose_grid(pixels)
@@ -89,6 +106,6 @@ class Board:
 
     def select_column(self, column):
         pyautogui.click(
-            self._get_grid_cordinates()[column][0] + LEFT,
-            self._get_grid_cordinates()[column][1] + TOP,
+            self._get_grid_cordinates()[column][1] + LEFT,
+            self._get_grid_cordinates()[column][0] + TOP,
         )
