@@ -39,3 +39,58 @@ def evaluate_window(window, piece):
         score -= 4
 
     return score
+
+
+def is_valid_location(board, col):
+    return board[ROW_COUNT - 1][col] == 0
+
+def get_valid_locations(board):
+    valid_locations = []
+    for col in range(COLUMN_COUNT):
+        if is_valid_location(board, col):
+            valid_locations.append(col)
+    return valid_locations
+
+
+def score_position(board, piece):
+    score = 0
+
+    # Score centre column
+    centre_array = [int(i) for i in list(board[:, COLUMN_COUNT // 2])]
+    # centre_array = [int(i) for i in [row[COLUMN_COUNT // 2] for row in board]]
+    centre_count = centre_array.count(piece)
+    score += centre_count * 3
+
+    # Score horizontal positions
+    for r in range(ROW_COUNT):
+        row_array = [int(i) for i in list(board[r, :])]
+        # row_array = [int(i) for i in board[r]]
+        for c in range(COLUMN_COUNT - 3):
+            # Create a horizontal window of 4
+            window = row_array[c:c + WINDOW_LENGTH]
+            score += evaluate_window(window, piece)
+
+    # Score vertical positions
+    for c in range(COLUMN_COUNT):
+        col_array = [int(i) for i in list(board[:, c])]
+        # col_array = [int(row[c]) for row in board]
+        for r in range(ROW_COUNT - 3):
+            # Create a vertical window of 4
+            window = col_array[r:r + WINDOW_LENGTH]
+            score += evaluate_window(window, piece)
+
+    # Score positive diagonals
+    for r in range(ROW_COUNT - 3):
+        for c in range(COLUMN_COUNT - 3):
+            # Create a positive diagonal window of 4
+            window = [board[r + i][c + i] for i in range(WINDOW_LENGTH)]
+            score += evaluate_window(window, piece)
+
+    # Score negative diagonals
+    for r in range(ROW_COUNT - 3):
+        for c in range(COLUMN_COUNT - 3):
+            # Create a negative diagonal window of 4
+            window = [board[r + 3 - i][c + i] for i in range(WINDOW_LENGTH)]
+            score += evaluate_window(window, piece)
+
+    return score
