@@ -21,11 +21,10 @@ def main():
     sys.exit(app.exec_())
 
 class Ui_MainWindow(object):
-    
     def start(self):
         if self.easyRadio.isChecked():
             difficultly = 1;
-        elif self.mediumRadioRadio.isChecked():
+        elif self.mediumRadio.isChecked():
             difficultly = 2
         elif self.hardRadio.isChecked():
             difficultly = 3
@@ -120,8 +119,8 @@ class Ui_MainWindow(object):
         self.mediumRadio.setText(_translate("MainWindow", "Medium"))
         self.hardRadio.setText(_translate("MainWindow", "Hard"))
         self.algorithmBox.setTitle(_translate("MainWindow", "Algorithm"))
-        self.minmaxRadio.setText(_translate("MainWindow", "Min-Max Algorithm"))
-        self.alphabetaRadio.setText(_translate("MainWindow", "Alpha-Beta Pruning Algorithm"))
+        self.minmaxRadio.setText(_translate("MainWindow", "Min-Max"))
+        self.alphabetaRadio.setText(_translate("MainWindow", "Alpha-Beta Pruning"))
         self.startButton.setText(_translate("MainWindow", "Start"))
 
 if __name__ == "__main__":
