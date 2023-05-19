@@ -6,10 +6,10 @@ import numpy as np
 
 # GAME LINK
 # http://kevinshannon.com/connect4/
-from algorithm import *
+from Algorithm import *
 
 
-def main():
+def start(difficultly, algorithm):
     board = Board()
 
     time.sleep(4)
@@ -24,7 +24,10 @@ def main():
         reversed_board = reversed_board[::-1]   
         reversed_board = np.array(reversed_board, dtype = int)
         # YOUR CODE GOES HERE
-        (column, value) = alpha_beta(reversed_board, 4, N_INF, INF, True)
+        if algorithm == 1:
+            (column, value) = minimax(reversed_board, difficultly*2, True)
+        else:
+            (column, value) = alpha_beta(reversed_board, difficultly*2, N_INF, INF, True)
 
         # Insert here the action you want to perform based on the output of the algorithm
         # You can use the followi+ng function to select a column
@@ -33,6 +36,3 @@ def main():
         if game_end:
                 print("gg")
         time.sleep(2)
-
-if __name__ == "__main__":
-    main()

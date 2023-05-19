@@ -183,8 +183,8 @@ def minimax(board, depth, maximisingPlayer):
                 column = col
         return column, value
 
-    def alpha_beta(board, depth, alpha, beta, maximisingPlayer):
-        valid_locations = get_valid_locations(board)
+def alpha_beta(board, depth, alpha, beta, maximisingPlayer):
+    valid_locations = get_valid_locations(board)
 
     is_terminal = is_terminal_node(board)
     if depth == 0 or is_terminal:
