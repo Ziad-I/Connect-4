@@ -13,6 +13,7 @@ def start(difficultly, algorithm):
     board = Board()
 
     time.sleep(4)
+    start = time.time()
     game_end = False
     while not game_end:
         (game_board, game_end) = board.get_game_grid()
@@ -30,9 +31,10 @@ def start(difficultly, algorithm):
             (column, value) = alpha_beta(reversed_board, difficultly*2, N_INF, INF, True)
 
         # Insert here the action you want to perform based on the output of the algorithm
-        # You can use the followi+ng function to select a column
+        # You can use the following function to select a column
         # column = random.randint(0, 6)
         board.select_column(column)
-        if game_end:
-                print("gg")
         time.sleep(2)
+
+    end = time.time()
+    print(end - start)
