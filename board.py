@@ -7,20 +7,20 @@ import numpy as np
 # 675 height
 
 #! Hamza's Values
-# LEFT = 431
-# TOP = 190
-# RIGHT = 934
-# BOTTOM = 619
-# START_CORD = (39, 34)
-# STEP = 71
+LEFT = 431
+TOP = 190
+RIGHT = 934
+BOTTOM = 619
+START_CORD = (39, 34)
+STEP = 71
 
 #! Ziad's Values
-LEFT = 591
-TOP = 256
-RIGHT = 1308
-BOTTOM = 871
-START_CORD = (50, 50)
-STEP = 100
+# LEFT = 591
+# TOP = 256
+# RIGHT = 1308
+# BOTTOM = 871
+# START_CORD = (50, 50)
+# STEP = 100
 
 EMPTY = 0
 RED = 1
@@ -62,7 +62,17 @@ class Board:
                 x = startCord[0] + i * STEP
                 y = startCord[1] + j * STEP
                 cordArr.append((x, y))
-        return cordArr 
+        return cordArr
+
+    def _get_column_cordinates(self):
+        startCord = START_CORD
+        cordArr = []
+        # 7
+        # 6
+        for i in range(0, 7):
+            x = startCord[0] + i * STEP
+            cordArr.append((x, startCord[1]))
+        return cordArr
 
     def _transpose_grid(self, grid):
         return [[grid[j][i] for j in range(len(grid))] for i in range(len(grid[0]))]
@@ -106,6 +116,6 @@ class Board:
 
     def select_column(self, column):
         pyautogui.click(
-            self._get_grid_cordinates()[column][1] + LEFT,
-            self._get_grid_cordinates()[column][0] + TOP,
+            self._get_column_cordinates()[column][0] + LEFT,
+            self._get_column_cordinates()[column][1] + TOP,
         )
