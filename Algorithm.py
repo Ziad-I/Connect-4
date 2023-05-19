@@ -125,3 +125,55 @@ def winning_move(board, piece):
 
 def is_terminal_node(board):
     return winning_move(board, PLAYER_PIECE) or winning_move(board, BOT_PIECE) or len(get_valid_locations(board)) == 0
+
+def minimax(board, depth, maximisingPlayer):
+    valid_locations = get_valid_locations(board)
+
+    is_terminal = is_terminal_node(board)
+    if depth == 0 or is_terminal:
+        if is_terminal:
+            # Weight the bot winning really high
+            if winning_move(board, BOT_PIECE):
+                return (None, INF)
+            # Weight the human winning really low
+            elif winning_move(board, PLAYER_PIECE):
+                return (None, N_INF)
+            else:  # No more valid moves
+                return (None, 0)
+        # Return the bot's score
+        else:
+            return (None, score_position(board, BOT_PIECE))
+
+    if maximisingPlayer:
+        value = N_INF
+        # Randomise column to start
+        column = random.choice(valid_locations)
+        for col in valid_locations:
+            row = get_next_open_row(board, col)
+            # Create a copy of the board
+            b_copy = board.copy()
+            # Drop a piece in the temporary board and record score
+            drop_piece(b_copy, row, col, BOT_PIECE)
+            new_score = minimax(b_copy, depth - 1, False)[1]
+            if new_score > value:
+                value = new_score
+                # Make 'column' the best scoring column we can get
+                column = col
+        return column, value
+
+    else:  # Minimising player
+        value = INF
+        # Randomise column to start
+        column = random.choice(valid_locations)
+        for col in valid_locations:
+            row = get_next_open_row(board, col)
+            # Create a copy of the board
+            b_copy = board.copy()
+            # Drop a piece in the temporary board and record score
+            drop_piece(b_copy, row, col, PLAYER_PIECE)
+            new_score = minimax(b_copy, depth - 1, True)[1]
+            if new_score < value:
+                value = new_score
+                # Make 'column' the best scoring column we can get
+                column = col
+        return column, value
