@@ -2,9 +2,11 @@ from board import Board
 import time
 import copy
 
+import numpy as np
+
 # GAME LINK
 # http://kevinshannon.com/connect4/
-from Algorithm import *
+from algorithm import *
 
 
 def main():
@@ -19,9 +21,10 @@ def main():
         board.print_grid(game_board)
         print("\n")
         reversed_board = copy.deepcopy(game_board)
-        reversed_board = reversed_board[::-1]
+        reversed_board = reversed_board[::-1]   
+        reversed_board = np.array(reversed_board, dtype = int)
         # YOUR CODE GOES HERE
-        (column, value) = minimax(reversed_board, 6, N_INF, INF, True)
+        (column, value) = alpha_beta(reversed_board, 4, N_INF, INF, True)
 
         # Insert here the action you want to perform based on the output of the algorithm
         # You can use the followi+ng function to select a column
