@@ -10,7 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
-
+from game import start
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
@@ -21,6 +21,22 @@ def main():
     sys.exit(app.exec_())
 
 class Ui_MainWindow(object):
+    
+    def start(self):
+        if self.easyRadio.isChecked():
+            difficultly = 1;
+        elif self.mediumRadioRadio.isChecked():
+            difficultly = 2
+        elif self.hardRadio.isChecked():
+            difficultly = 3
+            
+        if self.minmaxRadio.isChecked():
+            algorithm = 1
+        if self.alphabetaRadio.isChecked():
+            algorithm = 2
+        
+        start(difficultly, algorithm)
+        
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(469, 347)
@@ -82,6 +98,7 @@ class Ui_MainWindow(object):
         self.alphabetaRadio.setObjectName("alphabetaRadio")
         self.startButton = QtWidgets.QPushButton(self.centralwidget)
         self.startButton.setGeometry(QtCore.QRect(190, 280, 93, 28))
+        self.startButton.clicked.connect(self.start)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.startButton.setFont(font)
