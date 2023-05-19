@@ -94,3 +94,34 @@ def score_position(board, piece):
             score += evaluate_window(window, piece)
 
     return score
+
+def drop_piece(board, row, col, piece):
+    board[row][col] = piece
+
+def winning_move(board, piece):
+    # Check valid horizontal locations for win
+    for c in range(COLUMN_COUNT - 3):
+        for r in range(ROW_COUNT):
+            if board[r][c] == piece and board[r][c + 1] == piece and board[r][c + 2] == piece and board[r][c + 3] == piece:
+                return True
+
+    # Check valid vertical locations for win
+    for c in range(COLUMN_COUNT):
+        for r in range(ROW_COUNT - 3):
+            if board[r][c] == piece and board[r + 1][c] == piece and board[r + 2][c] == piece and board[r + 3][c] == piece:
+                return True
+
+    # Check valid positive diagonal locations for win
+    for c in range(COLUMN_COUNT - 3):
+        for r in range(ROW_COUNT - 3):
+            if board[r][c] == piece and board[r + 1][c + 1] == piece and board[r + 2][c + 2] == piece and board[r + 3][c + 3] == piece:
+                return True
+
+    # check valid negative diagonal locations for win
+    for c in range(COLUMN_COUNT - 3):
+        for r in range(3, ROW_COUNT):
+            if board[r][c] == piece and board[r - 1][c + 1] == piece and board[r - 2][c + 2] == piece and board[r - 3][c + 3] == piece:
+                return True
+
+def is_terminal_node(board):
+    return winning_move(board, PLAYER_PIECE) or winning_move(board, BOT_PIECE) or len(get_valid_locations(board)) == 0

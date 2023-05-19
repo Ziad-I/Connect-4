@@ -4,7 +4,7 @@ import copy
 
 # GAME LINK
 # http://kevinshannon.com/connect4/
-from algorithm import *
+from Algorithm import *
 
 
 def main():
