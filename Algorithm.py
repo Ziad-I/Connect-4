@@ -44,6 +44,7 @@ def evaluate_window(window, piece):
 def is_valid_location(board, col):
     return board[ROW_COUNT - 1][col] == 0
 
+
 def get_valid_locations(board):
     valid_locations = []
     for col in range(COLUMN_COUNT):
@@ -95,8 +96,10 @@ def score_position(board, piece):
 
     return score
 
+
 def drop_piece(board, row, col, piece):
     board[row][col] = piece
+
 
 def winning_move(board, piece):
     # Check valid horizontal locations for win
@@ -123,8 +126,10 @@ def winning_move(board, piece):
             if board[r][c] == piece and board[r - 1][c + 1] == piece and board[r - 2][c + 2] == piece and board[r - 3][c + 3] == piece:
                 return True
 
+
 def is_terminal_node(board):
     return winning_move(board, PLAYER_PIECE) or winning_move(board, BOT_PIECE) or len(get_valid_locations(board)) == 0
+
 
 def minimax(board, depth, maximisingPlayer):
     valid_locations = get_valid_locations(board)
@@ -176,4 +181,62 @@ def minimax(board, depth, maximisingPlayer):
                 value = new_score
                 # Make 'column' the best scoring column we can get
                 column = col
+        return column, value
+
+    def alpha_beta(board, depth, alpha, beta, maximisingPlayer):
+        valid_locations = get_valid_locations(board)
+
+    is_terminal = is_terminal_node(board)
+    if depth == 0 or is_terminal:
+        if is_terminal:
+            # Weight the bot winning really high
+            if winning_move(board, BOT_PIECE):
+                return (None, INF)
+            # Weight the human winning really low
+            elif winning_move(board, PLAYER_PIECE):
+                return (None, N_INF)
+            else:  # No more valid moves
+                return (None, 0)
+        # Return the bot's score
+        else:
+            return (None, score_position(board, BOT_PIECE))
+
+    if maximisingPlayer:
+        value = N_INF
+        # Randomise column to start
+        column = random.choice(valid_locations)
+        for col in valid_locations:
+            row = get_next_open_row(board, col)
+            # Create a copy of the board
+            b_copy = board.copy()
+            # Drop a piece in the temporary board and record score
+            drop_piece(b_copy, row, col, BOT_PIECE)
+            new_score = alpha_beta(b_copy, depth - 1, alpha, beta, False)[1]
+            if new_score > value:
+                value = new_score
+                # Make 'column' the best scoring column we can get
+                column = col
+            alpha = max(alpha, value)
+            if alpha >= beta:
+                break
+        return column, value
+
+    else:  # Minimising player
+        value = INF
+        # Randomise column to start
+        column = random.choice(valid_locations)
+        for col in valid_locations:
+            row = get_next_open_row(board, col)
+            # Create a copy of the board
+            b_copy = board.copy()
+            # Drop a piece in the temporary board and record score
+            drop_piece(b_copy, row, col, PLAYER_PIECE)
+            new_score = alpha_beta(b_copy, depth - 1, alpha, beta, True)[1]
+            if new_score < value:
+                value = new_score
+                # Make 'column' the best scoring column we can get
+                column = col
+            beta = min(beta, value)
+            if alpha >= beta:
+                break
         return column, value
